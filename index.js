@@ -1,5 +1,6 @@
 'use strict'
 
+const config = require('./config')
 const { makeExecutableSchema } = require('graphql-tools')
 const express = require('express')
 const { graphqlHTTP } = require('express-graphql')
@@ -8,7 +9,7 @@ const { join } = require('path')
 const resolvers = require('./lib/resolvers')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = config.port || 3000
 
 // schema defined
 
