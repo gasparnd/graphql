@@ -1,3 +1,10 @@
+"Validation of levels types"
+enum Level {
+  entry
+  middle
+  advance
+}
+
 type Course {
   _id: ID!
   title: String!
@@ -5,12 +12,27 @@ type Course {
   description: String!
   topic: String
   people: [Student]
+  level: Level
 }
 
-type Student {
+interface Person {
   _id: ID!
   name: String!
   email: String!
+}
+
+type Student implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  avatar: String
+}
+
+type Monitor implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  phone: String
 }
 
 type Query {
@@ -19,9 +41,9 @@ type Query {
   "Return one course"
   Course(id: ID!): Course
   "Return all Students"
-  Students: [Student]
+  People: [Person]
   "Return one Student"
-  Student(id: ID!): Student
+  Person(id: ID!): Person
 }
 
 input CourseInput {
@@ -29,6 +51,7 @@ input CourseInput {
   teacher: String
   description: String!
   topic: String
+  level: Level
 }
 
 input UpdateCourseInput {
@@ -38,14 +61,18 @@ input UpdateCourseInput {
   topic: String
 }
 
-input  StudentInput {
+input  PersonInput {
   name: String!
   email: String!
+  phone: String
+  avatar: String
 }
 
-input  UpdateStudentInput {
+input  UpdatePersonInput {
   name: String
   email: String
+  phone: String
+  avatar: String
 }
 
 type Mutation {
@@ -55,12 +82,12 @@ type Mutation {
   updateCourse(_id: ID!, input: UpdateCourseInput): Course
   "Delete course"
   deleteCourse(_id: ID!): String
-  "Create Student"
-  createStudent(input: StudentInput!): Student
-  "Edit Student"
-  updateStudent(_id: ID!, input: UpdateStudentInput): Student
-  "Delete Student"
-  deleteStudent(_id: ID!): String
+  "Create Person"
+  createPerson(input: PersonInput!): Person
+  "Edit Person"
+  updatePerson(_id: ID!, input: UpdatePersonInput): Person
+  "Delete Person"
+  deletePerson(_id: ID!): String
   "Add person to one course"
   addPeople(courseID: ID!, personID: ID!): Course
 }
